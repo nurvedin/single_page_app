@@ -3,15 +3,6 @@ template.innerHTML = `
 <style>
 
 </style>
-
-<div class="windowStyle" id="myForm">
-  <form class="form-container">
-
-    <textarea name="pop-up" required></textarea>
-
-    <button type="button" class="btnCancel" onclick="closeForm()">Close</button>
-  </form>
-</div>
 `
 export default class news extends window.HTMLElement {
   constructor () {

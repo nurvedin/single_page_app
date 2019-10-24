@@ -19,3 +19,7 @@ img[src*="news-icon"] {
   width: 40px;
   padding: 30px;
 }
+
+#myForm {
+  color: yellow;
+}
