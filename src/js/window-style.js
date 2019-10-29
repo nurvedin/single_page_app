@@ -1,3 +1,6 @@
+import './chat-style.js'
+import './news-style.js'
+
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
@@ -15,33 +18,38 @@ template.innerHTML = `
   width: 100%;
   background: #5B2E48;
   min-height: 310px;
+  border-radius: 10px;
 }
 
 .btnCancel {
+  margin-top: 4px;
+  margin-left: 90px;
+  margin-right: 20px;
   padding: 5px;
   cursor: pointer;
   width: 25%;
   background-color: transparent;
   color: red;
   border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 
 .btnSet {
+  margin-top: 4px;
   padding: 5px;
   cursor: pointer;
   width: 25%;
   background-color: transparent;
   color: blue;
   border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
 }
 </style>
 
 <div class="windowStyle" id="myForm">
-  <form class="form-container">
-    <div id="pop-up" required></div>
-    <button type="button" class="btnCancel">Close</button>
-    <button type="settings" class="btnSet">Settings</button>
-  </form>
+  <div id="pop-up"></div>
+  <button type="button" class="btnCancel">Close</button>
+  <button type="settings" class="btnSet">Settings</button>
 </div>
 `
 export default class windowStyle extends window.HTMLElement {
@@ -50,6 +58,16 @@ export default class windowStyle extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+  }
+
+  connectedCallback () {
+    // const chatFrame = document.createElement('chat-style')
+    // const popUp = this.shadowRoot.querySelector('#pop-up')
+    // popUp.appendChild(chatFrame)
+
+    const newsFrame = document.querySelector('news-style')
+    const popUp = this.shadowRoot.querySelector('#pop-up')
+    popUp.appendChild(newsFrame)
   }
 }
 

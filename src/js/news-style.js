@@ -1,8 +1,33 @@
 const template = document.createElement('template')
 template.innerHTML = `
 <style>
+.newsStyle {
+  background-color: transparent;
+  height: 30px;
+  width: 250px;
+}
 
+#news-pop-up {
+  height: 274px;
+  background: grey;
+}
+
+.btnReFresh {
+  margin-right: 180px;
+  padding: 5px;
+  cursor: pointer;
+  width: 25%;
+  background-color: transparent;
+  color: green;
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
 </style>
+
+<div class="newsStyle" id="newsForm">
+  <div id="news-pop-up"></div>
+  <button type="button" class="btnReFresh">ReFresh</button>
+</div>
 `
 export default class news extends window.HTMLElement {
   constructor () {
