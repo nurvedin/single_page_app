@@ -15,8 +15,8 @@ template.innerHTML = `
 #textarea {
   height: 30px;
   width: 244px;
-  background: whitesmoke !important;
-  border-radius: 10px;
+  background: transparent;
+  color: yellow;
 }
 
 .btnSend {
@@ -29,10 +29,19 @@ template.innerHTML = `
   border-radius: 10px;
   font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
+#msgWindow {
+  background: transparent;
+  width: 100%;
+  height: 274px;
+}
 </style>
 
 <div class="chatStyle" id="chatForm">
-  <div id="chat-pop-up"></div>
+  <div id="chat-pop-up">
+    <div id="msgWindow">
+    </div>
+  </div>
   <textarea id="textarea" placeholder="Type message.." name="msg" required></textarea>
   <button type="button" class="btnSend">Send</button>
 </div>
@@ -43,6 +52,10 @@ export default class chat extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+  }
+
+  connectedCallback () {
+
   }
 }
 

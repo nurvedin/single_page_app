@@ -5,17 +5,20 @@ body {
 img[src*="game-icon"] {
   height: 50px;
   width: 35px;
-  padding: 30px;
+  margin-right: 30px;
+  margin-bottom: 30px;
 }
 
 img[src*="chat-icon"] {
   height: 50px;
   width: 55px;
-  padding: 30px;
+  margin-right: 30px;
+  margin-bottom: 30px;
 }
 
 img[src*="news-icon"] {
   height: 50px;
   width: 40px;
-  padding: 30px;
+  margin-right: 30px;
+  margin-bottom: 30px;
 }

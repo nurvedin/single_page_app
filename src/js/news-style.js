@@ -8,8 +8,9 @@ template.innerHTML = `
 }
 
 #news-pop-up {
-  height: 274px;
-  background: grey;
+  height: 314px;
+  background: transparent;
+  border-radius: 10px;
 }
 
 .btnReFresh {
