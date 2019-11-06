@@ -1,0 +1,55 @@
+.chatStyle {
+  background-color: transparent;
+  height: 30px;
+  width: 250px;
+}
+
+#chat-pop-up {
+  height: 274px;
+  background: transparent;
+}
+
+#textarea {
+  height: 30px;
+  width: 244px;
+  background: transparent;
+  color: yellow;
+}
+
+.btnSend {
+  margin-right: 180px;
+  padding: 5px;
+  cursor: pointer;
+  width: 25%;
+  background-color: transparent;
+  color: green;
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+#msgWindow {
+  background: transparent;
+  width: 100%;
+  height: 274px;
+}
+
+.username {
+  text-align: center;
+  background: transparent;
+  color: yellow;
+}
+
+#userInput {
+  background: transparent;
+  color: yellow;
+  width: 120px;
+}
+
+#userBtn {
+  background: transparent;
+  color: yellow;
+  padding: 5px 10px 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}

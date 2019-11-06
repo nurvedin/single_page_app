@@ -1,0 +1,40 @@
+#myForm {
+  position: absolute;
+  background-color: yellow;
+  height: 350px;
+  right: 70px;
+  width: 250px;
+  padding: 10px 10px 0 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+#pop-up {
+  width: 100%;
+  background: #5B2E48;
+  min-height: 310px;
+}
+
+.btnCancel {
+  margin-top: 4px;
+  margin-left: 90px;
+  margin-right: 20px;
+  padding: 5px;
+  cursor: pointer;
+  width: 25%;
+  background-color: transparent;
+  color: red;
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.btnSet {
+  margin-top: 4px;
+  padding: 5px;
+  cursor: pointer;
+  width: 25%;
+  background-color: transparent;
+  color: blue;
+  border-radius: 10px;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}

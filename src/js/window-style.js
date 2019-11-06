@@ -3,54 +3,17 @@ import './news-style.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
-<style>
-#myForm {
-  position: absolute;
-  background-color: yellow;
-  height: 350px;
-  right: 70px;
-  width: 250px;
-  padding: 10px 10px 0 10px;
-  border-radius: 5px;
-  text-align: center;
-}
 
-#pop-up {
-  width: 100%;
-  background: #5B2E48;
-  min-height: 310px;
-}
-
-.btnCancel {
-  margin-top: 4px;
-  margin-left: 90px;
-  margin-right: 20px;
-  padding: 5px;
-  cursor: pointer;
-  width: 25%;
-  background-color: transparent;
-  color: red;
-  border-radius: 10px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-}
-
-.btnSet {
-  margin-top: 4px;
-  padding: 5px;
-  cursor: pointer;
-  width: 25%;
-  background-color: transparent;
-  color: blue;
-  border-radius: 10px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-}
-</style>
+<link rel="stylesheet" href="css/window.css">
 
 <div class="windowStyle" id="myForm">
   <div id="pop-up"></div>
-  <button type="button" class="btnCancel">Close</button>
-  <button type="settings" class="btnSet">Settings</button>
+  <div id="divBtn">
+    <button type="button" class="btnCancel">Close</button>
+    <button type="settings" class="btnSet">Settings</button>
+  </div>
 </div>
+
 `
 export default class windowStyle extends window.HTMLElement {
   constructor () {
@@ -65,21 +28,16 @@ export default class windowStyle extends window.HTMLElement {
     const popUp = this.shadowRoot.querySelector('#pop-up')
     popUp.appendChild(chatFrame)
 
-    myForm(this.shadowRoot.querySelector('#myForm'))
+    divBtn(this.shadowRoot.querySelector('#divBtn'))
 
-    function myForm (elmnt) {
+    function divBtn (elmnt) {
       let pos1 = 0
       let pos2 = 0
       let pos3 = 0
       let pos4 = 0
 
-      if (document.getElementById(elmnt.id + 'header')) {
-        // if present, the header is where you move the DIV from:
-        document.getElementById(elmnt.id + 'header').onmousedown = dragMouseDown
-      } else {
-        // otherwise, move the DIV from anywhere inside the DIV:
-        elmnt.onmousedown = dragMouseDown
-      }
+      elmnt.onmousedown = dragMouseDown
+
       function dragMouseDown (e) {
         e = e || window.event
         e.preventDefault()
@@ -100,6 +58,7 @@ export default class windowStyle extends window.HTMLElement {
         pos3 = e.clientX
         pos4 = e.clientY
         // set the element's new position:
+
         elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
         elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
       }

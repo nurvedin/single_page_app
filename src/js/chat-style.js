@@ -1,42 +1,17 @@
 const template = document.createElement('template')
 template.innerHTML = `
-<style>
-.chatStyle {
-  background-color: transparent;
-  height: 30px;
-  width: 250px;
-}
 
-#chat-pop-up {
-  height: 274px;
-  background: transparent;
-}
+<link rel="stylesheet" href="css/chat.css">
 
-#textarea {
-  height: 30px;
-  width: 244px;
-  background: transparent;
-  color: yellow;
-}
+<div class="username">
+  <label>Add a username:</label><br> 
+  <input type="text" placeholder="userName" id="userInput"><br>
+  <button type="button" id="userBtn">Add</button>
+</div>
+`
 
-.btnSend {
-  margin-right: 180px;
-  padding: 5px;
-  cursor: pointer;
-  width: 25%;
-  background-color: transparent;
-  color: green;
-  border-radius: 10px;
-  font-family: "Comic Sans MS", cursive, sans-serif;
-}
-
-#msgWindow {
-  background: transparent;
-  width: 100%;
-  height: 274px;
-}
-</style>
-
+const hasUsername = document.createElement('template')
+hasUsername.innerHTML = `
 <div class="chatStyle" id="chatForm">
   <div id="chat-pop-up">
     <div id="msgWindow">
@@ -46,6 +21,7 @@ template.innerHTML = `
   <button type="button" class="btnSend">Send</button>
 </div>
 `
+
 export default class chat extends window.HTMLElement {
   constructor () {
     super()
@@ -55,7 +31,24 @@ export default class chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    this._checkUsername()
+  }
 
+  _checkUsername () {
+    const button = this.shadowRoot.querySelector('#userBtn')
+    // const input = this.shadowRoot.querySelector('#userInput')
+
+    button.addEventListener('click', event => {
+      this._startChat()
+    })
+  }
+
+  _startChat () {
+    const usernameDiv = this.shadowRoot.querySelector('.username')
+    // const container = usernameDiv.parentElement
+    usernameDiv.remove()
+    const chat = hasUsername.content.cloneNode(true)
+    this.shadowRoot.appendChild(chat)
   }
 }
 
