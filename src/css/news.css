@@ -1,0 +1,20 @@
+.newsStyle {
+  height: 30px;
+  width: 250px;
+}
+
+#news-pop-up {
+  height: 314px;
+  border-radius: 10px;
+  overflow-y: auto;
+}
+
+#news-pop-up a {
+  width: 100%;
+  color: yellow;
+  font-size: 50%;
+}
+
+#news-pop-up img {
+  width: 100%;
+}

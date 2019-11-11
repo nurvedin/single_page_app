@@ -9,8 +9,8 @@ template.innerHTML = `
 <div class="windowStyle" id="myForm">
   <div id="pop-up"></div>
   <div id="divBtn">
-    <button type="button" class="btnCancel">Close</button>
-    <button type="settings" class="btnSet">Settings</button>
+    <button type="close" class="btnCancel">Close</button>
+    <button type="settings" class="btnSet">Set</button>
   </div>
 </div>
 
@@ -24,6 +24,10 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   connectedCallback () {
+    // const newsFrame = document.createElement('news-style')
+    // const newsPopUp = this.shadowRoot.querySelector('#pop-up')
+    // newsPopUp.appendChild(newsFrame)
+
     const chatFrame = document.createElement('chat-style')
     const popUp = this.shadowRoot.querySelector('#pop-up')
     popUp.appendChild(chatFrame)
@@ -69,9 +73,6 @@ export default class windowStyle extends window.HTMLElement {
         document.onmousemove = null
       }
     }
-    // const newsFrame = document.createElement('news-style')
-    // const newsPopUp = this.shadowRoot.querySelector('#pop-up')
-    // newsPopUp.appendChild(newsFrame)
   }
 }
 
