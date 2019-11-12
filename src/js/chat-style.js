@@ -35,12 +35,18 @@ export default class chat extends window.HTMLElement {
 
   connectedCallback () {
     this._checkUsername()
-    const apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    this.apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
+    const url = 'ws://vhost3.lnu.se:20080/socket/'
+    this.webSocket = new WebSocket(url)
+
+    this.webSocket.addEventListener('message', event => {
+      this._receiveMsg(event)
+    })
   }
 
   _checkUsername () {
     const userInfoItem = localStorage.getItem('user info')
-    var date = new Date()
+    // var date = new Date()
 
     const userInfo = {
       name: null,
@@ -64,14 +70,14 @@ export default class chat extends window.HTMLElement {
     const button = this.shadowRoot.querySelector('#userBtn')
     button.addEventListener('click', event => {
       // creating a div where the information is going to be inside
-      const user = this.shadowRoot.querySelector('#userInfo')
-      const userDiv = document.createElement('div')
-      userDiv.setAttribute('id', 'user')
+      // const user = this.shadowRoot.querySelector('#userInfo')
+      // const userDiv = document.createElement('div')
+      // userDiv.setAttribute('id', 'user')
       // userDiv.textContent = userName.value
-      userDiv.innerText = `${userInfo.name} : ${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`
-      console.log(userDiv.name)
-      console.log(userDiv.value)
-      user.appendChild(userDiv)
+      // userDiv.innerText = `${userInfo.name} : ${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`
+      // console.log(userDiv.name)
+      // console.log(userDiv.value)
+      // user.appendChild(userDiv)
       this._startChat()
     })
   }
@@ -89,28 +95,40 @@ export default class chat extends window.HTMLElement {
   }
 
   _sendMsg () {
-    const message = this.shadowRoot.querySelector('#myMsg')
-    const div = document.createElement('div')
-    div.setAttribute('id', 'sendMessages')
+    const sendmessage = this.shadowRoot.querySelector('#myMsg')
+    const senddiv = document.createElement('div')
+    const span = document.createElement('SPAN')
+    senddiv.appendChild(span)
+    senddiv.setAttribute('id', 'sendMessages')
     const input = this.shadowRoot.querySelector('#msgInput')
-    div.textContent = input.value
-    message.append(div)
+    span.innerText = input.value
+    sendmessage.append(senddiv)
+    // Construct a msg object containing the data the server needs to process the message from the chat client.
+    var msg = {
+      type: 'message',
+      data: input.value,
+      username: 'MyFancyUsername',
+      key: this.apiKey,
+      fromMySelf: true
+    }
+
+    // Send the msg object as a JSON-formatted string.
+    this.webSocket.send(JSON.stringify(msg))
+
     input.value = ''
   }
 
-  _receiveMsg () {
-    const message = this.shadowRoot.querySelector('#receivedMsg')
-    const div = document.createElement('div')
-    div.setAttribute('id', 'receiveMessages')
-    // message that comes frome the server, not finished yet
-    const input = this.shadowRoot.querySelector('#msgInput')
-    div.textContent = input.value
-    message.append(div)
-  }
-
-  _websocket () {
-    const url = 'ws://vhost3.lnu.se:20080/socket/'
-    const webSocket = new WebSocket(url)
+  _receiveMsg (event) {
+    const message = JSON.parse(event.data)
+    if (message.fromMySelf !== true && message.username !== 'The Server') {
+      const recmessage = this.shadowRoot.querySelector('#receivedMsg')
+      const recdiv = document.createElement('div')
+      const span = document.createElement('SPAN')
+      recdiv.appendChild(span)
+      recdiv.setAttribute('id', 'receiveMessages')
+      span.innerText = message.data
+      recmessage.append(recdiv)
+    }
   }
 }
 

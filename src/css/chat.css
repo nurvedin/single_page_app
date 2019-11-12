@@ -7,6 +7,7 @@
 #chat-pop-up {
   height: 274px;
   background: transparent;
+  overflow-y: auto;
 }
 
 #textarea {
@@ -68,23 +69,19 @@
 }
 
 #sendMessages {
-  display: flex;
-  margin-left: 110px;
   color: yellow;
   background: transparent;
   border: yellow solid;
   border-radius: 5px;
-  margin-right: 5px;
+  margin-left: 110px;
+  margin-top: 5px;
 }
 
 #receiveMessages {
-  display: flex;
-  margin-right: 110px;
   color: yellow;
   background: transparent;
   border: yellow solid;
   border-radius: 5px;
-  padding: 3px;
+  margin-right: 110px;
   margin-top: 5px;
-  margin-left: 5px;
 }
