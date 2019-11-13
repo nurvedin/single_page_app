@@ -1,5 +1,6 @@
 import './chat-style.js'
 import './news-style.js'
+import './memory-game.js'
 
 const template = document.createElement('template')
 template.innerHTML = `
@@ -16,7 +17,7 @@ template.innerHTML = `
 
 `
 export default class windowStyle extends window.HTMLElement {
-  constructor () {
+  constructor (application = 'default') {
     super()
 
     this.attachShadow({ mode: 'open' })
@@ -24,14 +25,50 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   connectedCallback () {
-    // const newsFrame = document.createElement('news-style')
-    // const newsPopUp = this.shadowRoot.querySelector('#pop-up')
-    // newsPopUp.appendChild(newsFrame)
+    // const gameButton = document.querySelector('#gameButton')
+    // const chatButton = document.querySelector('#chatButton')
+    // const newsButton = document.querySelector('#newsButton')
 
+    const app = this.getAttribute('application')
+
+    if (app === 'news') {
+      this._news()
+    } else if (app === 'chat') {
+      this._chat()
+    } else if (app === 'memory') {
+      this._memoryGame()
+    }
+
+    this._removeWindows()
+  }
+
+  _removeWindows () {
+    const cancelButton = this.shadowRoot.querySelector('.btnCancel')
+    cancelButton.addEventListener('click', event => {
+      const windowFrame = this.shadowRoot.querySelector('.windowStyle')
+      windowFrame.remove()
+    })
+  }
+
+  _memoryGame () {
+    const chatFrame = document.createElement('memory-game')
+    const popUp = this.shadowRoot.querySelector('#pop-up')
+    popUp.appendChild(chatFrame)
+  }
+
+  _chat () {
     const chatFrame = document.createElement('chat-style')
     const popUp = this.shadowRoot.querySelector('#pop-up')
     popUp.appendChild(chatFrame)
+  }
 
+  _news () {
+    const newsFrame = document.createElement('news-style')
+    const newsPopUp = this.shadowRoot.querySelector('#pop-up')
+    newsPopUp.appendChild(newsFrame)
+  }
+
+  _moveWindowFrame () {
     divBtn(this.shadowRoot.querySelector('#divBtn'))
 
     function divBtn (elmnt) {

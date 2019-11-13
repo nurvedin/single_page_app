@@ -45,39 +45,30 @@ export default class chat extends window.HTMLElement {
   }
 
   _checkUsername () {
-    const userInfoItem = localStorage.getItem('user info')
-    // var date = new Date()
-
     const userInfo = {
       name: null,
       time: null
     }
-    // getting the name and time to put in the localstorage
-    // const userName = template.content.cloneNode(true)
-    // this.shadowRoot.appendChild(userName)
-    // userInfo.name = userName.value
-    // console.log(userName.name)
-    // userInfo.time = `${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`
 
-    let itemArr = []
-    if (userInfoItem) {
-      itemArr = JSON.parse(userInfoItem)
-    }
-
-    itemArr.push(userInfo)
-    localStorage.setItem('user info', JSON.stringify(itemArr))
+    var date = new Date()
 
     const button = this.shadowRoot.querySelector('#userBtn')
+
     button.addEventListener('click', event => {
-      // creating a div where the information is going to be inside
-      // const user = this.shadowRoot.querySelector('#userInfo')
-      // const userDiv = document.createElement('div')
-      // userDiv.setAttribute('id', 'user')
-      // userDiv.textContent = userName.value
-      // userDiv.innerText = `${userInfo.name} : ${date.getHours()} : ${date.getMinutes()} : ${date.getSeconds()}`
-      // console.log(userDiv.name)
-      // console.log(userDiv.value)
-      // user.appendChild(userDiv)
+      const userInput = this.shadowRoot.querySelector('#userInput')
+      const userInfoItem = localStorage.getItem('user info')
+      // getting the name and time to put in the localstorage
+      userInfo.name = userInput.value
+      userInfo.time = `${date.getHours()} : ${date.getMinutes()}`
+
+      let itemArr = []
+      if (userInfoItem) {
+        itemArr = JSON.parse(userInfoItem)
+      }
+
+      itemArr.push(userInfo)
+      localStorage.setItem('user info', JSON.stringify(itemArr))
+      console.log(userInfo.name)
       this._startChat()
     })
   }
@@ -95,6 +86,17 @@ export default class chat extends window.HTMLElement {
   }
 
   _sendMsg () {
+    // creating a div where the information is going to be inside
+    const user = this.shadowRoot.querySelector('#userInfo')
+    const userDiv = document.createElement('div')
+    const userspan = document.createElement('SPAN')
+    userDiv.appendChild(userspan)
+    userDiv.setAttribute('id', 'user')
+    this.userInfo = this.userInfo.name
+    console.log(this.userInfo)
+    userDiv.innerText = `${this.userInfo.name} ' ' ${this.userInfo.time}`
+    user.appendChild(userDiv)
+
     const sendmessage = this.shadowRoot.querySelector('#myMsg')
     const senddiv = document.createElement('div')
     const span = document.createElement('SPAN')
@@ -103,11 +105,11 @@ export default class chat extends window.HTMLElement {
     const input = this.shadowRoot.querySelector('#msgInput')
     span.innerText = input.value
     sendmessage.append(senddiv)
-    // Construct a msg object containing the data the server needs to process the message from the chat client.
+    // Construct a message object containing the data the server needs to process the message from the chat client.
     var msg = {
       type: 'message',
       data: input.value,
-      username: 'MyFancyUsername',
+      username: 'My name',
       key: this.apiKey,
       fromMySelf: true
     }
