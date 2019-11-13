@@ -40,6 +40,7 @@ export default class windowStyle extends window.HTMLElement {
     }
 
     this._removeWindows()
+    this._moveWindowFrame()
   }
 
   _removeWindows () {
@@ -69,7 +70,7 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   _moveWindowFrame () {
-    divBtn(this.shadowRoot.querySelector('#divBtn'))
+    divBtn(this.shadowRoot.querySelector('#myForm'))
 
     function divBtn (elmnt) {
       let pos1 = 0

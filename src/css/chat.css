@@ -64,8 +64,11 @@
   width: 100%;
 }
 
-#userInfo {
-  background: blue;
+#user {
+  font-size: 70%;
+  margin-left: 40px;
+  background: transparent;
+  color: yellow;
 }
 
 #sendMessages {
