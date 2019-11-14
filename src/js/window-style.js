@@ -25,10 +25,6 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   connectedCallback () {
-    // const gameButton = document.querySelector('#gameButton')
-    // const chatButton = document.querySelector('#chatButton')
-    // const newsButton = document.querySelector('#newsButton')
-
     const app = this.getAttribute('application')
 
     if (app === 'news') {
@@ -39,11 +35,19 @@ export default class windowStyle extends window.HTMLElement {
       this._memoryGame()
     }
 
-    this._removeWindows()
+    this._removeButton()
     this._moveWindowFrame()
+    this._settingsBtn()
   }
 
-  _removeWindows () {
+  _settingsBtn () {
+    const settingsButton = this.shadowRoot.querySelector('.btnSet')
+    settingsButton.addEventListener('click', event => {
+      // add functionality for different things, for example add memory game sizes
+    })
+  }
+
+  _removeButton () {
     const cancelButton = this.shadowRoot.querySelector('.btnCancel')
     cancelButton.addEventListener('click', event => {
       const windowFrame = this.shadowRoot.querySelector('.windowStyle')
@@ -100,7 +104,6 @@ export default class windowStyle extends window.HTMLElement {
         pos3 = e.clientX
         pos4 = e.clientY
         // set the element's new position:
-
         elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
         elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
       }

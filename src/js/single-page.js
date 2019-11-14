@@ -16,7 +16,6 @@ export default class SinglePage {
       windowFrame.setAttribute('application', 'memory')
       const singleTag = document.querySelector('body')
       singleTag.appendChild(windowFrame)
-      console.log('Jag är i memory game')
     })
 
     newsButton.addEventListener('click', event => {
@@ -25,7 +24,6 @@ export default class SinglePage {
       windowFrame.setAttribute('application', 'news')
       const singleTag = document.querySelector('body')
       singleTag.appendChild(windowFrame)
-      console.log('Jag är i news')
     })
 
     chatButton.addEventListener('click', event => {
@@ -34,7 +32,6 @@ export default class SinglePage {
       windowFrame.setAttribute('application', 'chat')
       const singleTag = document.querySelector('body')
       singleTag.appendChild(windowFrame)
-      console.log('Jag är i chatten')
     })
   }
 }

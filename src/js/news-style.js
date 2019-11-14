@@ -14,15 +14,6 @@ export default class news extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
   }
 
-  // set article (article) {
-  //  this.root.innerHTML = `
-  //    <a href="${article.url}">
-  //     <h2>${article.title}</h2>
-  //      <img src="${article.urlToImage || ''}">
-  //      <p>${article.description || ''}</p>
-  //    </a>`
-  // }
-
   connectedCallback () {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._getNewsApi()
@@ -39,13 +30,6 @@ export default class news extends window.HTMLElement {
       const main = shadow.querySelector('#news-pop-up')
 
       main.innerHTML = response.articles.map(createArticle).join('\n')
-      // const main = this.shadowRoot.querySelector('.newsStyle')
-      // console.log(main)
-      // response.articles.forEach(article => {
-      //  const element = document.createElement('news-article')
-      //  element.article = article
-      //  body.appendChild(element)
-      // })
     }
 
     function createArticle (article) {
@@ -58,20 +42,6 @@ export default class news extends window.HTMLElement {
     }
 
     fetchNews(shadow)
-
-    // const newsFrame = this.shadowRoot.querySelector('#news-pop-up')
-
-    // const req = new Request(topHeadLines)
-    // fetch(req)
-    //  .then(response => response.json())
-    //  .then(({ articles }) => { console.log(articles); return articles })
-    //  .then(articles => console.log(articles['0'].author, articles['0'].title))
-    //  .then(articles => {
-    //    const aTag = document.createElement('a')
-    //    aTag.setAttribute('href', 'article.url')
-    //    newsFrame.appendChild(aTag)
-    //    console.log(aTag)
-    //  })
   }
 }
 
