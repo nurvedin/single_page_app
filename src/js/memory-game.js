@@ -1,8 +1,13 @@
 const template = document.createElement('template')
 template.innerHTML = `
-<style>
 
-</style>
+
+
+<div id="memoryContainer">
+  <div class="memory">
+    <a href="#"><img src="image/0.png" alt="A memory brick" /></a>
+  </div>
+</div>
 `
 export default class memoryGame extends window.HTMLElement {
   constructor () {

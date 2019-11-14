@@ -1,0 +1,7 @@
+.memory  img {
+  width: 100px;
+}
+
+.memory .removed {
+  visibility: hidden;
+}
