@@ -33,50 +33,51 @@ export default class chat extends window.HTMLElement {
   }
 
   connectedCallback () {
-    this._checkUsername()
     this.apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     const url = 'ws://vhost3.lnu.se:20080/socket/'
     this.webSocket = new WebSocket(url)
-
-    this.userInfo = {
-      name: null,
-      time: null
-    }
-
     this.webSocket.addEventListener('message', event => {
       this._receiveMsg(event)
     })
+
+    this.userInfo = {
+      name: null
+    }
+    const checkStorage = localStorage.getItem('user-info')
+    if (checkStorage === null) {
+      this._checkUsername()
+    } else {
+      this._startChat()
+    }
   }
 
   _checkUsername () {
-    var date = new Date()
-    var h = date.getHours()
-    var m = date.getMinutes()
-    var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM')
-
     const button = this.shadowRoot.querySelector('#userBtn')
 
     button.addEventListener('click', event => {
       const userInput = this.shadowRoot.querySelector('#userInput')
-      const userInfoItem = localStorage.getItem('user info')
+      // const userInfoItem = localStorage.getItem('user-info')
       // getting the name and time to put in the localstorage
       this.userInfo.name = userInput.value
-      this.userInfo.time = `${_time}`
+      // this.userInfo = userInfoItem
+      // let itemArr = []
+      // if (userInfoItem) {
+      //  itemArr = JSON.parse(userInfoItem)
+      // }
 
-      let itemArr = []
-      if (userInfoItem) {
-        itemArr = JSON.parse(userInfoItem)
-      }
-
-      itemArr.push(this.userInfo)
-      localStorage.setItem('user info', JSON.stringify(itemArr))
+      // itemArr.push(this.userInfo)
+      localStorage.setItem('user-info', JSON.stringify(this.userInfo))
+      const usernameDiv = this.shadowRoot.querySelector('.username')
+      usernameDiv.remove()
       this._startChat()
     })
   }
 
   _startChat () {
     const usernameDiv = this.shadowRoot.querySelector('.username')
-    usernameDiv.remove()
+    if (usernameDiv) {
+      usernameDiv.remove()
+    }
     const chat = hasUsername.content.cloneNode(true)
     this.shadowRoot.appendChild(chat)
 
@@ -87,6 +88,11 @@ export default class chat extends window.HTMLElement {
   }
 
   _sendMsg () {
+    var date = new Date()
+    var h = date.getHours()
+    var m = date.getMinutes()
+    var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM')
+
     const sendmessage = this.shadowRoot.querySelector('#myMsg')
     const senddiv = document.createElement('div')
     const span = document.createElement('SPAN')
@@ -95,11 +101,14 @@ export default class chat extends window.HTMLElement {
     const input = this.shadowRoot.querySelector('#msgInput')
     span.innerText = input.value
     sendmessage.append(senddiv)
+    this.userInfo.time = `${_time}`
+    const getName = localStorage.getItem('user-info')
+    console.log(JSON.parse(getName).name)
 
     // creating a div where the information is going to be inside
     const userDiv = document.createElement('div')
     userDiv.setAttribute('id', 'user')
-    userDiv.innerText = `${this.userInfo.name} ${this.userInfo.time}`
+    userDiv.innerText = `${JSON.parse(getName).name} ${this.userInfo.time}`
     sendmessage.appendChild(userDiv)
 
     // Construct a message object containing the data the server needs to process the message from the chat client.

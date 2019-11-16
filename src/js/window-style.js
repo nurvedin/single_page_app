@@ -74,7 +74,7 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   _moveWindowFrame () {
-    divBtn(this.shadowRoot.querySelector('#myForm'))
+    divBtn(this.shadowRoot.querySelector('#divBtn'))
 
     function divBtn (elmnt) {
       let pos1 = 0
