@@ -71,6 +71,13 @@
   color: yellow;
 }
 
+#fromServer {
+  font-size: 70%;
+  margin-right: 50px;
+  background: transparent;
+  color: yellow;
+}
+
 #sendMessages {
   color: yellow;
   background: transparent;

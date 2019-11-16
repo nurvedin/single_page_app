@@ -39,9 +39,11 @@ export default class chat extends window.HTMLElement {
     this.webSocket.addEventListener('message', event => {
       this._receiveMsg(event)
     })
+    // this._saveMsg()
 
     this.userInfo = {
-      name: null
+      name: null,
+      messages: null
     }
     const checkStorage = localStorage.getItem('user-info')
     if (checkStorage === null) {
@@ -103,7 +105,6 @@ export default class chat extends window.HTMLElement {
     sendmessage.append(senddiv)
     this.userInfo.time = `${_time}`
     const getName = localStorage.getItem('user-info')
-    console.log(JSON.parse(getName).name)
 
     // creating a div where the information is going to be inside
     const userDiv = document.createElement('div')
@@ -115,7 +116,7 @@ export default class chat extends window.HTMLElement {
     var msg = {
       type: 'message',
       data: input.value,
-      username: 'My name',
+      username: JSON.parse(getName).name,
       key: this.apiKey,
       fromMySelf: true
     }
@@ -128,6 +129,7 @@ export default class chat extends window.HTMLElement {
 
   _receiveMsg (event) {
     const message = JSON.parse(event.data)
+
     if (message.fromMySelf !== true && message.username !== 'The Server') {
       const recmessage = this.shadowRoot.querySelector('#receivedMsg')
       const recdiv = document.createElement('div')
@@ -136,6 +138,22 @@ export default class chat extends window.HTMLElement {
       recdiv.setAttribute('id', 'receiveMessages')
       span.innerText = message.data
       recmessage.append(recdiv)
+
+      // creating a div where the information is going to be inside
+      const userDiv = document.createElement('div')
+      userDiv.setAttribute('id', 'fromServer')
+      userDiv.innerText = `${message.username} ${this.userInfo.time}`
+      recmessage.appendChild(userDiv)
+    }
+  }
+
+  _saveMsg () {
+    this.userInfo.messages = this._sendMsg()
+    this.userInfo.messages = this._receiveMsg()
+    const saveMsg = localStorage.getItem('user-info')
+    console.log(saveMsg)
+    if (this.userInfo.messages > 20) {
+      saveMsg.remove()
     }
   }
 }
