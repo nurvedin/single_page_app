@@ -39,11 +39,9 @@ export default class chat extends window.HTMLElement {
     this.webSocket.addEventListener('message', event => {
       this._receiveMsg(event)
     })
-    // this._saveMsg()
 
     this.userInfo = {
-      name: null,
-      messages: null
+      name: null
     }
     const checkStorage = localStorage.getItem('user-info')
     if (checkStorage === null) {
@@ -129,6 +127,9 @@ export default class chat extends window.HTMLElement {
 
   _receiveMsg (event) {
     const message = JSON.parse(event.data)
+    if (message.username !== 'The Server') {
+      this._saveMsg(message)
+    }
 
     if (message.fromMySelf !== true && message.username !== 'The Server') {
       const recmessage = this.shadowRoot.querySelector('#receivedMsg')
@@ -147,13 +148,23 @@ export default class chat extends window.HTMLElement {
     }
   }
 
-  _saveMsg () {
-    this.userInfo.messages = this._sendMsg()
-    this.userInfo.messages = this._receiveMsg()
-    const saveMsg = localStorage.getItem('user-info')
-    console.log(saveMsg)
-    if (this.userInfo.messages > 20) {
-      saveMsg.remove()
+  _saveMsg (message) {
+    const msgArr = []
+
+    const messageStorage = {
+      message: msgArr
+    }
+
+    const messageInfo = JSON.parse(localStorage.getItem('message-info'))
+    if (messageInfo === null) {
+      msgArr.push(message)
+      localStorage.setItem('message-info', JSON.stringify(messageStorage))
+    } else if (messageInfo.message.length <= 20) {
+      console.log(messageInfo.message)
+      messageInfo.message.push(message)
+      localStorage.setItem('message-info', JSON.stringify(messageInfo))
+    } else if (messageInfo.message.length > 20) {
+      messageInfo.message.shift()
     }
   }
 }
