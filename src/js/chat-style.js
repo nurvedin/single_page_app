@@ -19,7 +19,15 @@ hasUsername.innerHTML = `
   </div>
   <div id="textarea">
     <input type="text" placeholder="Type message.." id="msgInput">
-    <div id="emoji">🌝</div>
+    <div id="emoji">⬇️</div>
+      <div id="myBox">
+        <div id="box-content">
+          <div id="smiley">🌝</div>
+          <div id="laughing">😂</div>
+          <div id="thumbs-up">👍</div>
+          <div id="joga-bonito">🤙</div>
+        </div>
+      </div>
     <button type="button" class="btnSend">Send</button>
   </div>
 </div>
@@ -31,6 +39,8 @@ export default class chat extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+
+    this.emojiMenyOpen = false
   }
 
   static get observedAttributes () {
@@ -60,9 +70,30 @@ export default class chat extends window.HTMLElement {
 
     const emoji = this.shadowRoot.querySelector('#emoji')
     emoji.addEventListener('click', e => {
-      const input = this.shadowRoot.querySelector('#msgInput')
-      input.value += '🌝'
+      this.emojiMenyOpen = !this.emojiMenyOpen
+      const getBox = this.shadowRoot.querySelector('#myBox')
+      if (this.emojiMenyOpen) {
+        console.log('Open')
+        getBox.style.display = 'block'
+        // const input = this.shadowRoot.querySelector('#msgInput')
+        const smiley = this.shadowRoot.querySelector('#smiley')
+        smiley.addEventListener('click', this._onClickFunction)
+        const laughing = this.shadowRoot.querySelector('#laughing')
+        laughing.addEventListener('click', this._onClickFunction)
+        const thumbsUp = this.shadowRoot.querySelector('#thumbs-up')
+        thumbsUp.addEventListener('click', this._onClickFunction)
+        const jogaBonito = this.shadowRoot.querySelector('#joga-bonito')
+        jogaBonito.addEventListener('click', this._onClickFunction)
+      } else {
+        console.log('Close')
+        getBox.style.display = 'none'
+      }
     })
+  }
+
+  _onClickFunction () {
+    const input = this.parentNode.parentNode.parentNode.children[0]
+    input.value += this.innerText
   }
 
   _checkUsername () {
@@ -142,7 +173,7 @@ export default class chat extends window.HTMLElement {
         // creating a div where the information is going to be inside
         const userDiv = document.createElement('div')
         userDiv.setAttribute('id', 'fromServer')
-        userDiv.innerText = `${message.username} ${this.userInfo.time}`
+        userDiv.innerText = `${message.username}`
         recmessage.appendChild(userDiv)
       }
     }
