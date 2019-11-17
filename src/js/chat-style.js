@@ -19,6 +19,7 @@ hasUsername.innerHTML = `
   </div>
   <div id="textarea">
     <input type="text" placeholder="Type message.." id="msgInput">
+    <div id="emoji">🌝</div>
     <button type="button" class="btnSend">Send</button>
   </div>
 </div>
@@ -56,6 +57,12 @@ export default class chat extends window.HTMLElement {
     } else {
       this._startChat()
     }
+
+    const emoji = this.shadowRoot.querySelector('#emoji')
+    emoji.addEventListener('click', e => {
+      const input = this.shadowRoot.querySelector('#msgInput')
+      input.value += '🌝'
+    })
   }
 
   _checkUsername () {
@@ -88,6 +95,7 @@ export default class chat extends window.HTMLElement {
   _sendMsg () {
     const input = this.shadowRoot.querySelector('#msgInput')
     const getName = localStorage.getItem('user-info')
+    // console.log('🌝')
     // Construct a message object containing the data the server needs to process the message from the chat client.
     var msg = {
       type: 'message',
@@ -104,7 +112,6 @@ export default class chat extends window.HTMLElement {
   }
 
   _receiveMsg (event) {
-    console.log(event)
     const message = JSON.parse(event)
     console.log(message)
 

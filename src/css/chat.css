@@ -17,6 +17,10 @@
   color: #5B2E48;
 }
 
+#emoji {
+  cursor: pointer;
+}
+
 .btnSend {
   cursor: pointer;
   background-color: #5B2E48;

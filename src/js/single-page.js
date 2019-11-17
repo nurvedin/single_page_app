@@ -50,8 +50,8 @@ export default class SinglePage {
     // Construct a message object containing the data the server needs to process the message from the chat client.
     var msg = {
       type: 'message',
-      data: input.value,
-      username: JSON.parse(getName).name,
+      // data: input.value,
+      // username: JSON.parse(getName).name,
       key: this.apiKey,
       fromMySelf: true
     }
@@ -59,7 +59,7 @@ export default class SinglePage {
     // Send the msg object as a JSON-formatted string.
     this.webSocket.send(JSON.stringify(msg))
 
-    input.value = ''
+    // input.value = ''
   }
 
   _receiveMsg (event) {
