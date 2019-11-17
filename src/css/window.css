@@ -9,10 +9,15 @@
   text-align: center;
 }
 
+.windowStyle {
+  user-select: none;
+}
+
 #pop-up {
   width: 100%;
   background: #5B2E48;
-  min-height: 310px;
+  min-height: 300px;
+  margin-top: 10px;
 }
 
 .btnCancel {

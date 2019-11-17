@@ -25,20 +25,27 @@ hasUsername.innerHTML = `
 `
 
 export default class chat extends window.HTMLElement {
-  constructor () {
+  constructor (message = 'default') {
     super()
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
   }
 
+  static get observedAttributes () {
+    return ['message']
+  }
+
+  attributeChangedCallback (name, oldValue, newValue) {
+    this._receiveMsg(newValue)
+  }
+
   connectedCallback () {
+    // const app = this.getAttribute('message')
+
     this.apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     const url = 'ws://vhost3.lnu.se:20080/socket/'
     this.webSocket = new WebSocket(url)
-    this.webSocket.addEventListener('message', event => {
-      this._receiveMsg(event)
-    })
 
     this.userInfo = {
       name: null
@@ -56,16 +63,7 @@ export default class chat extends window.HTMLElement {
 
     button.addEventListener('click', event => {
       const userInput = this.shadowRoot.querySelector('#userInput')
-      // const userInfoItem = localStorage.getItem('user-info')
-      // getting the name and time to put in the localstorage
       this.userInfo.name = userInput.value
-      // this.userInfo = userInfoItem
-      // let itemArr = []
-      // if (userInfoItem) {
-      //  itemArr = JSON.parse(userInfoItem)
-      // }
-
-      // itemArr.push(this.userInfo)
       localStorage.setItem('user-info', JSON.stringify(this.userInfo))
       const usernameDiv = this.shadowRoot.querySelector('.username')
       usernameDiv.remove()
@@ -88,28 +86,8 @@ export default class chat extends window.HTMLElement {
   }
 
   _sendMsg () {
-    var date = new Date()
-    var h = date.getHours()
-    var m = date.getMinutes()
-    var _time = (h > 12) ? (h - 12 + ':' + m + ' PM') : (h + ':' + m + ' AM')
-
-    const sendmessage = this.shadowRoot.querySelector('#myMsg')
-    const senddiv = document.createElement('div')
-    const span = document.createElement('SPAN')
-    senddiv.appendChild(span)
-    senddiv.setAttribute('id', 'sendMessages')
     const input = this.shadowRoot.querySelector('#msgInput')
-    span.innerText = input.value
-    sendmessage.append(senddiv)
-    this.userInfo.time = `${_time}`
     const getName = localStorage.getItem('user-info')
-
-    // creating a div where the information is going to be inside
-    const userDiv = document.createElement('div')
-    userDiv.setAttribute('id', 'user')
-    userDiv.innerText = `${JSON.parse(getName).name} ${this.userInfo.time}`
-    sendmessage.appendChild(userDiv)
-
     // Construct a message object containing the data the server needs to process the message from the chat client.
     var msg = {
       type: 'message',
@@ -126,45 +104,40 @@ export default class chat extends window.HTMLElement {
   }
 
   _receiveMsg (event) {
-    const message = JSON.parse(event.data)
+    console.log(event)
+    const message = JSON.parse(event)
+    console.log(message)
+
     if (message.username !== 'The Server') {
-      this._saveMsg(message)
-    }
+      if (message.fromMySelf === true) {
+        const sendmessage = this.shadowRoot.querySelector('#myMsg')
+        const senddiv = document.createElement('div')
+        const span = document.createElement('SPAN')
+        senddiv.appendChild(span)
+        senddiv.setAttribute('id', 'sendMessages')
+        span.innerText = message.data
+        sendmessage.append(senddiv)
 
-    if (message.fromMySelf !== true && message.username !== 'The Server') {
-      const recmessage = this.shadowRoot.querySelector('#receivedMsg')
-      const recdiv = document.createElement('div')
-      const span = document.createElement('SPAN')
-      recdiv.appendChild(span)
-      recdiv.setAttribute('id', 'receiveMessages')
-      span.innerText = message.data
-      recmessage.append(recdiv)
+        // creating a div where the information is going to be inside
+        const userDiv = document.createElement('div')
+        userDiv.setAttribute('id', 'user')
+        userDiv.innerText = `${message.username}`
+        sendmessage.appendChild(userDiv)
+      } else {
+        const recmessage = this.shadowRoot.querySelector('#receivedMsg')
+        const recdiv = document.createElement('div')
+        const span = document.createElement('SPAN')
+        recdiv.appendChild(span)
+        recdiv.setAttribute('id', 'receiveMessages')
+        span.innerText = message.data
+        recmessage.append(recdiv)
 
-      // creating a div where the information is going to be inside
-      const userDiv = document.createElement('div')
-      userDiv.setAttribute('id', 'fromServer')
-      userDiv.innerText = `${message.username} ${this.userInfo.time}`
-      recmessage.appendChild(userDiv)
-    }
-  }
-
-  _saveMsg (message) {
-    const msgArr = []
-
-    const messageStorage = {
-      message: msgArr
-    }
-
-    const messageInfo = JSON.parse(localStorage.getItem('message-info'))
-    if (messageInfo === null) {
-      msgArr.push(message)
-      localStorage.setItem('message-info', JSON.stringify(messageStorage))
-    } else if (messageInfo.message.length <= 20) {
-      console.log(messageInfo.message)
-      messageInfo.message.push(message)
-      localStorage.setItem('message-info', JSON.stringify(messageInfo))
-    } else if (messageInfo.message.length > 20) {
-      messageInfo.message.shift()
+        // creating a div where the information is going to be inside
+        const userDiv = document.createElement('div')
+        userDiv.setAttribute('id', 'fromServer')
+        userDiv.innerText = `${message.username} ${this.userInfo.time}`
+        recmessage.appendChild(userDiv)
+      }
     }
   }
 }

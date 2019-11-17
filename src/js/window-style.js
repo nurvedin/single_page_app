@@ -7,11 +7,13 @@ template.innerHTML = `
 
 <link rel="stylesheet" href="css/window.css">
 
+
 <div class="windowStyle" id="myForm">
   <div id="pop-up"></div>
   <div id="divBtn">
     <button type="close" class="btnCancel">Close</button>
     <button type="settings" class="btnSet">Set</button>
+    <div id="myDropdown" > </div>
   </div>
 </div>
 
@@ -22,6 +24,9 @@ export default class windowStyle extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this.mouseisdown = false
+    this.mousestartX = 0
+    this.mousestartY = 0
   }
 
   connectedCallback () {
@@ -43,7 +48,9 @@ export default class windowStyle extends window.HTMLElement {
   _settingsBtn () {
     const settingsButton = this.shadowRoot.querySelector('.btnSet')
     settingsButton.addEventListener('click', event => {
-      // add functionality for different things, for example add memory game sizes
+      // add functionality for different things, for example add memory game sizes'
+      const dropDown = this.shadowRoot.querySelector('#myDropdown')
+      dropDown.createElement('h2')
     })
   }
 
@@ -74,6 +81,21 @@ export default class windowStyle extends window.HTMLElement {
   }
 
   _moveWindowFrame () {
+    const div = this.shadowRoot.querySelector('#divBtn')
+    div.addEventListener('mousedown', e => {
+      this.mouseisdown = true
+      const windowStyle = this.shadowRoot.querySelector('.windowStyle')
+      this.mousestartX = e.clientX - windowStyle.getBoundingClientRect().left
+      this.mousestartY = e.clientY - windowStyle.getBoundingClientRect().top
+      document.addEventListener('mousemove', e => {
+        if (this.mouseisdown) {
+          windowStyle.setAttribute('style', 'left: ' + (e.pageX - this.mousestartX) + 'px; ' + 'top: ' + (e.pageY - this.mousestartY) + 'px;')
+        }
+      })
+      document.addEventListener('mouseup', e => {
+        this.mouseisdown = false
+      })
+    })
     divBtn(this.shadowRoot.querySelector('#divBtn'))
 
     function divBtn (elmnt) {
@@ -85,8 +107,7 @@ export default class windowStyle extends window.HTMLElement {
       elmnt.onmousedown = dragMouseDown
 
       function dragMouseDown (e) {
-        e = e || window.event
-        e.preventDefault()
+        e = e || this.shadowRoot.event
         // get the mouse cursor position at startup:
         pos3 = e.clientX
         pos4 = e.clientY
@@ -96,8 +117,7 @@ export default class windowStyle extends window.HTMLElement {
       }
 
       function elementDrag (e) {
-        e = e || window.event
-        e.preventDefault()
+        e = e || this.shadowRoot.event
         // calculate the new cursor position:
         pos1 = pos3 - e.clientX
         pos2 = pos4 - e.clientY
