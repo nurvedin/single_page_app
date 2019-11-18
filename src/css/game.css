@@ -5,3 +5,33 @@
 .memory .removed {
   visibility: hidden;
 }
+
+#h2-tag {
+  font-family: serif;
+  color: yellow;
+}
+
+h2 {
+  font-family: serif;
+  color: yellow;
+}
+
+button {
+  font-family: serif;
+  color: yellow;
+  background: transparent;
+  border: 2px solid yellow;
+  border-radius: 5px;
+}
+
+#playAgain {
+  font-family: serif;
+  color: yellow;
+  background: transparent;
+  border: 2px solid yellow;
+  border-radius: 5px;
+}
+#memoryContainer h2 {
+  margin: 0;
+  padding: 10px;
+}

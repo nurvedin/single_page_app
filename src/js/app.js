@@ -5,4 +5,4 @@ import SinglePage from './single-page.js'
 // printCards(2, 4, 'memoryContainer')
 // printCards(4, 4, 'memoryContainer')
 
-const singlePage = new SinglePage()
+export const singlePage = new SinglePage()

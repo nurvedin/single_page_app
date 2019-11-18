@@ -12,8 +12,6 @@ template.innerHTML = `
   <div id="pop-up"></div>
   <div id="divBtn">
     <button type="close" class="btnCancel">Close</button>
-    <button type="settings" class="btnSet">Set</button>
-    <div id="myDropdown" > </div>
   </div>
 </div>
 
@@ -44,23 +42,12 @@ export default class windowStyle extends window.HTMLElement {
 
     this._removeButton()
     this._moveWindowFrame()
-    this._settingsBtn()
     this._getFocusOnWindow()
   }
 
   _getFocusOnWindow () {
     const myWindows = this.shadowRoot.querySelector('.windowStyle')
     myWindows.focus()
-  }
-
-  _settingsBtn () {
-    const settingsButton = this.shadowRoot.querySelector('.btnSet')
-    settingsButton.addEventListener('click', event => {
-      // add functionality for different things, for example add memory game sizes'
-      // const dropDown = this.shadowRoot.querySelector('#myDropdown')
-      // dropDown.createElement('h2')
-      console.log('Är i settings knappen')
-    })
   }
 
   _removeButton () {

@@ -29,9 +29,70 @@ export default class memoryGame extends window.HTMLElement {
   }
 
   connectedCallback () {
-    this._printCards(2, 2, 'memoryContainer')
-    // this._printCards(4, 2, 'memoryContainer')
-    // this._printCards(4, 4, 'memoryContainer')
+    this._playGame()
+  }
+
+  _cleanUpMemory () {
+    const memory = this.shadowRoot.querySelector('.memory')
+    memory.parentNode.removeChild(memory)
+  }
+
+  _playGame () {
+    const div = this.shadowRoot.querySelector('#memoryContainer')
+    const h2 = document.createElement('h2')
+    h2.innerText = 'Choose game size'
+    div.appendChild(h2)
+    const twoBytwo = document.createElement('button')
+    const twoByfour = document.createElement('button')
+    const fourByfour = document.createElement('button')
+    twoBytwo.innerText = '2 by 2'
+    twoByfour.innerText = '4 by 2'
+    fourByfour.innerText = '4 by 4'
+
+    div.appendChild(twoBytwo)
+    div.appendChild(twoByfour)
+    div.appendChild(fourByfour)
+
+    twoBytwo.addEventListener('click', e => {
+      div.removeChild(h2)
+      div.removeChild(twoBytwo)
+      div.removeChild(twoByfour)
+      div.removeChild(fourByfour)
+      this._printCards(2, 2, 'memoryContainer')
+    })
+
+    twoByfour.addEventListener('click', e => {
+      div.removeChild(h2)
+      div.removeChild(twoBytwo)
+      div.removeChild(twoByfour)
+      div.removeChild(fourByfour)
+      this._printCards(4, 2, 'memoryContainer')
+    })
+
+    fourByfour.addEventListener('click', e => {
+      div.removeChild(h2)
+      div.removeChild(twoBytwo)
+      div.removeChild(twoByfour)
+      div.removeChild(fourByfour)
+      this._printCards(4, 4, 'memoryContainer')
+    })
+  }
+
+  _wonGame () {
+    const div = this.shadowRoot.querySelector('#memoryContainer')
+    const h2 = document.createElement('h2')
+    h2.setAttribute('id', 'h2-tag')
+    h2.innerText = 'You won on ' + this.tries + ' number of tries!'
+    div.appendChild(h2)
+    const playAgainBtn = document.createElement('button')
+    playAgainBtn.setAttribute('id', 'playAgain')
+    playAgainBtn.innerText = 'Play Again'
+    div.appendChild(playAgainBtn)
+    playAgainBtn.addEventListener('click', e => {
+      div.removeChild(h2)
+      div.removeChild(playAgainBtn)
+      this._playGame()
+    })
   }
 
   _printCards (numRows, numCols, container) {
@@ -53,6 +114,17 @@ export default class memoryGame extends window.HTMLElement {
         div.appendChild(document.createElement('br'))
       }
     })
+
+    div.addEventListener('mouseover', event => {
+      event.preventDefault()
+      var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
+      var index = parseInt(img.getAttribute('data-bricknumber'))
+      this._hoverBrick(this.tiles[index], index, img, true)
+      setTimeout(e => {
+        this._hoverBrick(this.tiles[index], index, img, false)
+      }, 500)
+    })
+
     div.addEventListener('click', event => {
       event.preventDefault()
       var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
@@ -60,6 +132,10 @@ export default class memoryGame extends window.HTMLElement {
       this._turnBrick(this.tiles[index], index, img)
     })
     container.appendChild(div)
+  }
+
+  _hoverBrick (tile, index, img, peak = null) {
+    img.src = peak ? 'image/' + tile + '.png' : 'image/0.png'
   }
 
   _turnBrick (tile, index, img) {
@@ -81,7 +157,10 @@ export default class memoryGame extends window.HTMLElement {
         this.pairs += 1
 
         if (this.pairs === (this.cols * this.rows) / 2) {
-          console.log('Won on ' + this.tries + ' number of tries')
+          this._wonGame()
+          this._cleanUpMemory()
+          this.pairs = 0
+          this.tries = 0
         }
 
         setTimeout(e => {
