@@ -73,9 +73,7 @@ export default class chat extends window.HTMLElement {
       this.emojiMenyOpen = !this.emojiMenyOpen
       const getBox = this.shadowRoot.querySelector('#myBox')
       if (this.emojiMenyOpen) {
-        console.log('Open')
         getBox.style.display = 'block'
-        // const input = this.shadowRoot.querySelector('#msgInput')
         const smiley = this.shadowRoot.querySelector('#smiley')
         smiley.addEventListener('click', this._onClickFunction)
         const laughing = this.shadowRoot.querySelector('#laughing')
@@ -85,7 +83,6 @@ export default class chat extends window.HTMLElement {
         const jogaBonito = this.shadowRoot.querySelector('#joga-bonito')
         jogaBonito.addEventListener('click', this._onClickFunction)
       } else {
-        console.log('Close')
         getBox.style.display = 'none'
       }
     })
@@ -126,7 +123,6 @@ export default class chat extends window.HTMLElement {
   _sendMsg () {
     const input = this.shadowRoot.querySelector('#msgInput')
     const getName = localStorage.getItem('user-info')
-    // console.log('🌝')
     // Construct a message object containing the data the server needs to process the message from the chat client.
     var msg = {
       type: 'message',
@@ -144,7 +140,6 @@ export default class chat extends window.HTMLElement {
 
   _receiveMsg (event) {
     const message = JSON.parse(event)
-    console.log(message)
 
     if (message.username !== 'The Server') {
       if (message.fromMySelf === true) {

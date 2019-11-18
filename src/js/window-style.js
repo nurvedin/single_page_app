@@ -18,6 +18,8 @@ template.innerHTML = `
 </div>
 
 `
+
+let zCounter = 0
 export default class windowStyle extends window.HTMLElement {
   constructor (application = 'default') {
     super()
@@ -43,6 +45,12 @@ export default class windowStyle extends window.HTMLElement {
     this._removeButton()
     this._moveWindowFrame()
     this._settingsBtn()
+    this._getFocusOnWindow()
+  }
+
+  _getFocusOnWindow () {
+    const myWindows = this.shadowRoot.querySelector('.windowStyle')
+    myWindows.focus()
   }
 
   _settingsBtn () {
@@ -84,6 +92,7 @@ export default class windowStyle extends window.HTMLElement {
     const div = this.shadowRoot.querySelector('#divBtn')
     div.addEventListener('mousedown', e => {
       this.mouseisdown = true
+      div.parentNode.style.zIndex = ++zCounter
       const windowStyle = this.shadowRoot.querySelector('.windowStyle')
       this.mousestartX = e.clientX - windowStyle.getBoundingClientRect().left
       this.mousestartY = e.clientY - windowStyle.getBoundingClientRect().top
@@ -93,47 +102,10 @@ export default class windowStyle extends window.HTMLElement {
         }
       })
       document.addEventListener('mouseup', e => {
+        div.parentNode.style.zIndex = ++zCounter
         this.mouseisdown = false
       })
     })
-    divBtn(this.shadowRoot.querySelector('#divBtn'))
-
-    function divBtn (elmnt) {
-      let pos1 = 0
-      let pos2 = 0
-      let pos3 = 0
-      let pos4 = 0
-
-      elmnt.onmousedown = dragMouseDown
-
-      function dragMouseDown (e) {
-        e = e || this.shadowRoot.event
-        // get the mouse cursor position at startup:
-        pos3 = e.clientX
-        pos4 = e.clientY
-        document.onmouseup = closeDragElement
-        // call a function whenever the cursor moves:
-        document.onmousemove = elementDrag
-      }
-
-      function elementDrag (e) {
-        e = e || this.shadowRoot.event
-        // calculate the new cursor position:
-        pos1 = pos3 - e.clientX
-        pos2 = pos4 - e.clientY
-        pos3 = e.clientX
-        pos4 = e.clientY
-        // set the element's new position:
-        elmnt.style.top = (elmnt.offsetTop - pos2) + 'px'
-        elmnt.style.left = (elmnt.offsetLeft - pos1) + 'px'
-      }
-
-      function closeDragElement () {
-        // stop moving when mouse button is released:
-        document.onmouseup = null
-        document.onmousemove = null
-      }
-    }
   }
 }
 

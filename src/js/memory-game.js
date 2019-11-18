@@ -58,9 +58,6 @@ export default class memoryGame extends window.HTMLElement {
       event.preventDefault()
       var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
       var index = parseInt(img.getAttribute('data-bricknumber'))
-      console.log(img)
-      console.log(index)
-      console.log(this.tiles)
       this._turnBrick(this.tiles[index], index, img)
     })
     container.appendChild(div)

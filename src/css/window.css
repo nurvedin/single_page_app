@@ -11,6 +11,7 @@
 
 .windowStyle {
   user-select: none;
+  border: 2px solid black;
 }
 
 #pop-up {

@@ -34,6 +34,34 @@ export default class SinglePage {
       windowFrame.setAttribute('application', 'chat')
       const singleTag = document.querySelector('body')
       singleTag.appendChild(windowFrame)
+      const messages = JSON.parse(localStorage.getItem('message-info'))
+
+      if (messages.message) {
+        for (let index = 0; index < messages.message.length; index++) {
+          const element = messages.message[index]
+          // console.log(element.fromMySelf)
+
+          if (element.fromMySelf === true) {
+            // console.log(element.fromMySelf)
+            // const myMsg = document.querySelectorAll('chat-style')
+            // console.log(myMsg)
+            // Array.from(myMsg).filter(elem => elem.getAttribute('application') === 'chat')
+            const senddiv = document.createElement('div')
+            const span = document.createElement('SPAN')
+            senddiv.appendChild(span)
+            senddiv.setAttribute('id', 'sendMessages')
+            span.innerText = element.data
+            // fromStorage.appendChild(senddiv)
+            // creating a div where the information is going to be inside
+            const userDiv = document.createElement('div')
+            userDiv.setAttribute('id', 'user')
+            userDiv.innerText = `${element.username}`
+            // sendmessage.appendChild(userDiv)
+          } else {
+            console.log('här')
+          }
+        }
+      }
     })
   }
 
