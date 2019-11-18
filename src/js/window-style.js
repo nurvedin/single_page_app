@@ -86,7 +86,7 @@ export default class windowStyle extends window.HTMLElement {
       this.mousestartY = e.clientY - windowStyle.getBoundingClientRect().top
       document.addEventListener('mousemove', e => {
         if (this.mouseisdown) {
-          windowStyle.setAttribute('style', 'left: ' + (e.pageX - this.mousestartX) + 'px; ' + 'top: ' + (e.pageY - this.mousestartY) + 'px;')
+          windowStyle.setAttribute('style', 'left: ' + (e.pageX - this.mousestartX) + 'px; ' + 'top: ' + (e.pageY - this.mousestartY) + 'px;' + 'z-index:' + zCounter + ';')
         }
       })
       document.addEventListener('mouseup', e => {
