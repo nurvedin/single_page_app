@@ -14,8 +14,7 @@ const hasUsername = document.createElement('template')
 hasUsername.innerHTML = `
 <div class="chatStyle" id="chatForm">
   <div id="chat-pop-up">
-    <div id="myMsg"></div>
-    <div id="receivedMsg"></div>
+    <div id="messages"></div>
   </div>
   <div id="textarea">
     <input type="text" placeholder="Type message.." id="msgInput">
@@ -86,6 +85,49 @@ export default class chat extends window.HTMLElement {
         getBox.style.display = 'none'
       }
     })
+
+    this._getHistory()
+  }
+
+  _getHistory () {
+    const messages = JSON.parse(localStorage.getItem('message-info'))
+    // console.log(messages)
+    if (messages.message) {
+      for (let index = 0; index < messages.message.length; index++) {
+        const element = messages.message[index]
+        console.log(element)
+
+        if (element.fromMySelf === true) {
+          const sendmessage = this.shadowRoot.querySelector('#messages')
+          const senddiv = document.createElement('div')
+          const span = document.createElement('SPAN')
+          senddiv.appendChild(span)
+          senddiv.setAttribute('id', 'sendMessages')
+          span.innerText = element.data
+          sendmessage.appendChild(senddiv)
+          console.log(sendmessage)
+          // creating a div where the information is going to be inside
+          const userDiv = document.createElement('div')
+          userDiv.setAttribute('id', 'user')
+          userDiv.innerText = `${element.username}`
+          sendmessage.appendChild(userDiv)
+        } else {
+          const recmessage = this.shadowRoot.querySelector('#messages')
+          const recdiv = document.createElement('div')
+          const span = document.createElement('SPAN')
+          recdiv.appendChild(span)
+          recdiv.setAttribute('id', 'receiveMessages')
+          span.innerText = element.data
+          recmessage.append(recdiv)
+
+          // creating a div where the information is going to be inside
+          const userDiv = document.createElement('div')
+          userDiv.setAttribute('id', 'fromServer')
+          userDiv.innerText = `${element.username}`
+          recmessage.appendChild(userDiv)
+        }
+      }
+    }
   }
 
   _onClickFunction () {
@@ -143,7 +185,7 @@ export default class chat extends window.HTMLElement {
 
     if (message.username !== 'The Server') {
       if (message.fromMySelf === true) {
-        const sendmessage = this.shadowRoot.querySelector('#myMsg')
+        const sendmessage = this.shadowRoot.querySelector('#messages')
         const senddiv = document.createElement('div')
         const span = document.createElement('SPAN')
         senddiv.appendChild(span)
@@ -157,7 +199,7 @@ export default class chat extends window.HTMLElement {
         userDiv.innerText = `${message.username}`
         sendmessage.appendChild(userDiv)
       } else {
-        const recmessage = this.shadowRoot.querySelector('#receivedMsg')
+        const recmessage = this.shadowRoot.querySelector('#messages')
         const recdiv = document.createElement('div')
         const span = document.createElement('SPAN')
         recdiv.appendChild(span)
