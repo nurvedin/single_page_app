@@ -18,7 +18,7 @@ export default class memoryGame extends window.HTMLElement {
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
 
-    this.tiles = []
+    this.tiles = [false]
     this.rows = null
     this.cols = null
     this.turn1 = null
@@ -46,7 +46,6 @@ export default class memoryGame extends window.HTMLElement {
 
     this.tiles.forEach(function (tile, index) {
       a = document.importNode(templateDiv.firstElementChild, true)
-      console.log(a)
       a.firstElementChild.setAttribute('data-bricknumber', index)
       div.appendChild(a)
 
@@ -54,7 +53,7 @@ export default class memoryGame extends window.HTMLElement {
         div.appendChild(document.createElement('br'))
       }
     })
-    div.addEventListener('click', function (event) {
+    div.addEventListener('click', event => {
       event.preventDefault()
       var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
       var index = parseInt(img.getAttribute('data-bricknumber'))
@@ -85,14 +84,14 @@ export default class memoryGame extends window.HTMLElement {
           console.log('Won on ' + this.tries + ' number of tries')
         }
 
-        setTimeout(function () {
+        setTimeout(e => {
           this.turn1.parentNode.classList.add('removed')
           this.turn2.parentNode.classList.add('removed')
           this.turn1 = null
           this.turn2 = null
         }, 300)
       } else {
-        setTimeout(function () {
+        setTimeout(e => {
           this.turn1.src = 'image/0.png'
           this.turn2.src = 'image/0.png'
           this.turn1 = null

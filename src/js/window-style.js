@@ -57,8 +57,9 @@ export default class windowStyle extends window.HTMLElement {
     const settingsButton = this.shadowRoot.querySelector('.btnSet')
     settingsButton.addEventListener('click', event => {
       // add functionality for different things, for example add memory game sizes'
-      const dropDown = this.shadowRoot.querySelector('#myDropdown')
-      dropDown.createElement('h2')
+      // const dropDown = this.shadowRoot.querySelector('#myDropdown')
+      // dropDown.createElement('h2')
+      console.log('Är i settings knappen')
     })
   }
 

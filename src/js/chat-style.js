@@ -51,8 +51,6 @@ export default class chat extends window.HTMLElement {
   }
 
   connectedCallback () {
-    // const app = this.getAttribute('message')
-
     this.apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     const url = 'ws://vhost3.lnu.se:20080/socket/'
     this.webSocket = new WebSocket(url)
@@ -91,11 +89,9 @@ export default class chat extends window.HTMLElement {
 
   _getHistory () {
     const messages = JSON.parse(localStorage.getItem('message-info'))
-    // console.log(messages)
     if (messages.message) {
       for (let index = 0; index < messages.message.length; index++) {
         const element = messages.message[index]
-        console.log(element)
 
         if (element.fromMySelf === true) {
           const sendmessage = this.shadowRoot.querySelector('#messages')
@@ -105,7 +101,7 @@ export default class chat extends window.HTMLElement {
           senddiv.setAttribute('id', 'sendMessages')
           span.innerText = element.data
           sendmessage.appendChild(senddiv)
-          console.log(sendmessage)
+
           // creating a div where the information is going to be inside
           const userDiv = document.createElement('div')
           userDiv.setAttribute('id', 'user')
