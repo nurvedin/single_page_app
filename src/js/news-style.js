@@ -19,6 +19,7 @@ export default class news extends window.HTMLElement {
     this._getNewsApi()
   }
 
+  // fetching the news from a news api with a api a got from the site and just posting it on my window frame
   _getNewsApi () {
     const apiKey = '70de23976ca14990ac88a3473a4affe9'
     const topHeadLines = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=' + apiKey

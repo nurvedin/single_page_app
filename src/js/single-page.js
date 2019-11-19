@@ -58,6 +58,8 @@ export default class SinglePage {
     this.webSocket.send(JSON.stringify(msg))
   }
 
+  // receiving and saving messages from all of the chat app that are open.
+  // they act as one and get the same information at the same time
   _receiveMsg (event) {
     const message = JSON.parse(event.data)
     if (message.username !== 'The Server') {
@@ -73,6 +75,8 @@ export default class SinglePage {
     }
   }
 
+  // saving my messages to the local storage depending on different scenarios.
+  // if the storage is empty or less than 20 then push, but if larger then stop at 20 with slice function
   _saveMsg (message) {
     const msgArr = []
 

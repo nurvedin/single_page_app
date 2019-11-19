@@ -19,6 +19,7 @@ template.innerHTML = `
 
 let zCounter = 0
 export default class windowStyle extends window.HTMLElement {
+  // give the constructor a attribute that is going to be changed later
   constructor (application = 'default') {
     super()
 
@@ -31,7 +32,7 @@ export default class windowStyle extends window.HTMLElement {
 
   connectedCallback () {
     const app = this.getAttribute('application')
-
+    // checking on the attribute on where/which window to call and open/create
     if (app === 'news') {
       this._news()
     } else if (app === 'chat') {
@@ -50,6 +51,7 @@ export default class windowStyle extends window.HTMLElement {
     myWindows.focus()
   }
 
+  // event listener on the close button to remove window
   _removeButton () {
     const cancelButton = this.shadowRoot.querySelector('.btnCancel')
     cancelButton.addEventListener('click', event => {
@@ -76,14 +78,18 @@ export default class windowStyle extends window.HTMLElement {
     newsPopUp.appendChild(newsFrame)
   }
 
+  // function to move my windowsS
   _moveWindowFrame () {
     const div = this.shadowRoot.querySelector('#divBtn')
+    // when clicking, returns the size of an element and its position relative to the viewport on the left and top
     div.addEventListener('mousedown', e => {
       this.mouseisdown = true
+      // incrementing a counter to make the window appear in front of all windows
       div.parentNode.style.zIndex = ++zCounter
       const windowStyle = this.shadowRoot.querySelector('.windowStyle')
       this.mousestartX = e.clientX - windowStyle.getBoundingClientRect().left
       this.mousestartY = e.clientY - windowStyle.getBoundingClientRect().top
+      // changing the position when moving the window
       document.addEventListener('mousemove', e => {
         if (this.mouseisdown) {
           windowStyle.setAttribute('style', 'left: ' + (e.pageX - this.mousestartX) + 'px; ' + 'top: ' + (e.pageY - this.mousestartY) + 'px;' + 'z-index:' + zCounter + ';')

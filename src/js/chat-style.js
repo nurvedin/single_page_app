@@ -38,7 +38,7 @@ export default class chat extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-
+    // boolean variable to use when opening and closing emoji menu
     this.emojiMenyOpen = false
   }
 
@@ -51,13 +51,16 @@ export default class chat extends window.HTMLElement {
   }
 
   connectedCallback () {
+    // always having the websocket open
     this.apiKey = 'eDBE76deU7L0H9mEBgxUKVR0VCnq0XBd'
     const url = 'ws://vhost3.lnu.se:20080/socket/'
     this.webSocket = new WebSocket(url)
-
+    // the object where the username is going to be added in localstorage
     this.userInfo = {
       name: null
     }
+
+    // checking if there is a name in the storage and deciding where to go
     const checkStorage = localStorage.getItem('user-info')
     if (checkStorage === null) {
       this._checkUsername()
@@ -65,6 +68,8 @@ export default class chat extends window.HTMLElement {
       this._startChat()
     }
 
+    // event listener on emoji "button", and then adding event listeners
+    // to the emojis who is going to be shown on the screen
     const emoji = this.shadowRoot.querySelector('#emoji')
     emoji.addEventListener('click', e => {
       this.emojiMenyOpen = !this.emojiMenyOpen
@@ -87,6 +92,8 @@ export default class chat extends window.HTMLElement {
     this._getHistory()
   }
 
+  // function to get the last 20 messages from the localstorage and putting
+  // it in the same way as when live chatting
   _getHistory () {
     const messages = JSON.parse(localStorage.getItem('message-info'))
     if (messages.message) {
@@ -102,7 +109,7 @@ export default class chat extends window.HTMLElement {
           span.innerText = element.data
           sendmessage.appendChild(senddiv)
 
-          // creating a div where the information is going to be inside
+          // creating a div where the username information is going to be inside
           const userDiv = document.createElement('div')
           userDiv.setAttribute('id', 'user')
           userDiv.innerText = `${element.username}`
@@ -116,7 +123,7 @@ export default class chat extends window.HTMLElement {
           span.innerText = element.data
           recmessage.append(recdiv)
 
-          // creating a div where the information is going to be inside
+          // creating a div where the username information is going to be inside
           const userDiv = document.createElement('div')
           userDiv.setAttribute('id', 'fromServer')
           userDiv.innerText = `${element.username}`
@@ -126,11 +133,13 @@ export default class chat extends window.HTMLElement {
     }
   }
 
+  // putting in the emojis in the input field
   _onClickFunction () {
     const input = this.parentNode.parentNode.parentNode.children[0]
     input.value += this.innerText
   }
 
+  // typing in the username and adding it to the localstorage
   _checkUsername () {
     const button = this.shadowRoot.querySelector('#userBtn')
 
@@ -144,6 +153,7 @@ export default class chat extends window.HTMLElement {
     })
   }
 
+  // removing username template and adding the chat template
   _startChat () {
     const usernameDiv = this.shadowRoot.querySelector('.username')
     if (usernameDiv) {
@@ -158,6 +168,7 @@ export default class chat extends window.HTMLElement {
     })
   }
 
+  // creating the message object with information and sending it to the serverS
   _sendMsg () {
     const input = this.shadowRoot.querySelector('#msgInput')
     const getName = localStorage.getItem('user-info')
@@ -176,6 +187,9 @@ export default class chat extends window.HTMLElement {
     input.value = ''
   }
 
+  // receiving messages and handling them, checking from who the message is from and handling accordingly
+  // ignoring the heartbeat and checking if the message is mine or somebody elses, 
+  // because my message is also coming back
   _receiveMsg (event) {
     const message = JSON.parse(event)
 

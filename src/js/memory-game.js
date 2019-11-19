@@ -32,11 +32,13 @@ export default class memoryGame extends window.HTMLElement {
     this._playGame()
   }
 
+  // a cleaning up function to use when to remove the game div when you won to display "winning message"
   _cleanUpMemory () {
     const memory = this.shadowRoot.querySelector('.memory')
     memory.parentNode.removeChild(memory)
   }
 
+  // starting the game with options on which game size you want
   _playGame () {
     const div = this.shadowRoot.querySelector('#memoryContainer')
     const h2 = document.createElement('h2')
@@ -78,6 +80,7 @@ export default class memoryGame extends window.HTMLElement {
     })
   }
 
+  // function to display win message and to take you back to the start
   _wonGame () {
     const div = this.shadowRoot.querySelector('#memoryContainer')
     const h2 = document.createElement('h2')
@@ -95,6 +98,7 @@ export default class memoryGame extends window.HTMLElement {
     })
   }
 
+  // function to put out the bricks on the board
   _printCards (numRows, numCols, container) {
     let a
     this.rows = numRows
@@ -104,7 +108,7 @@ export default class memoryGame extends window.HTMLElement {
     var templateDiv = this.shadowRoot.querySelectorAll('#memoryContainer template')[0].content.firstElementChild
 
     var div = document.importNode(templateDiv, false)
-
+    // traversing the tiles and giving them an attribute and an index number, which position they come in
     this.tiles.forEach(function (tile, index) {
       a = document.importNode(templateDiv.firstElementChild, true)
       a.firstElementChild.setAttribute('data-bricknumber', index)
@@ -115,6 +119,7 @@ export default class memoryGame extends window.HTMLElement {
       }
     })
 
+    // event listener over the bricks with a hover effect, by setting a time out of half a second
     div.addEventListener('mouseover', event => {
       event.preventDefault()
       var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
@@ -125,6 +130,7 @@ export default class memoryGame extends window.HTMLElement {
       }, 500)
     })
 
+    // same event listener as the hover but instead turning the bricks
     div.addEventListener('click', event => {
       event.preventDefault()
       var img = event.target.nodeName === 'IMG' ? event.target : event.target.firstElementChild
@@ -134,10 +140,14 @@ export default class memoryGame extends window.HTMLElement {
     container.appendChild(div)
   }
 
+  // the hover function
   _hoverBrick (tile, index, img, peak = null) {
     img.src = peak ? 'image/' + tile + '.png' : 'image/0.png'
   }
 
+  // turning the bricks, if it is turn2 then we are done
+  // if finding the same img they are removed by adding removed to the class
+  // also increment how many tries and pairs we find, then reseting them after each time.
   _turnBrick (tile, index, img) {
     if (this.turn2) { return }
 

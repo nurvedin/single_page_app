@@ -1,8 +1,7 @@
-import SinglePage from './single-page.js'
-// import { printCards } from './memory-game.js'
+/**
+ * Creating single page and exporting it
+ */
 
-// printCards(2, 2, 'memoryContainer')
-// printCards(2, 4, 'memoryContainer')
-// printCards(4, 4, 'memoryContainer')
+import SinglePage from './single-page.js'
 
 export const singlePage = new SinglePage()
